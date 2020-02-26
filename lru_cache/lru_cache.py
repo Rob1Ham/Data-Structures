@@ -16,7 +16,7 @@ class LRUCache:
         self.length = 0
         #using DLL as the storage structure of the cache
         #it will hold the key-value entries in correct order
-        self.storage = DoublyLinkedList()
+        self.order = DoublyLinkedList()
         #library starts as a blank dictionary
         self.library = dict()
 
@@ -26,7 +26,7 @@ class LRUCache:
     such that the pair is considered most-recently used.
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
-    
+
     """
     def get(self, key):
         #need to check if the key is in the library
@@ -36,7 +36,7 @@ class LRUCache:
             #to that key
             node = self.library[key]
             #move the called noded to the end
-            self.storage.move_to_end(node)
+            self.order.move_to_end(node)
 
             return node.value[1]
         else:
@@ -66,23 +66,23 @@ class LRUCache:
             node.value = (key, value)
             #since it was called most recently
             #it is moved to the top of the stack
-            self.storage.move_to_end(node)
+            self.order.move_to_end(node)
             return
         #if the cache is full
         if self.length == self.limit:
             #drop the oldest value in the cache (head)
-            del self.library[self.storage.head.value[0]]
+            del self.library[self.order.head.value[0]]
             #remove the cache entry for the oldest entry
-            self.storage.remove_from_head()
+            self.order.remove_from_head()
             #reduce length by one
             self.length -= 1
         
         #with the old entry dropped
         #add new entry
         #the tail is the newest entry in the cache
-        self.storage.add_to_tail((key, value))
+        self.order.add_to_tail((key, value))
         #the library dictionary needs the updated reference
         #pointing to the newest value in the cache assigned above
-        self.library[key] = self.storage.tail
+        self.library[key] = self.order.tail
         #cache gets increased length
         self.length += 1
