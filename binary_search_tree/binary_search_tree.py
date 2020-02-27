@@ -84,22 +84,91 @@ class BinarySearchTree:
             self.right.for_each(cb)
 
 
+
+
+
+
+
+
+
+
     # DAY 2 Project -----------------------
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        #if you can go left
+        if node.left:
+            #go further down the tree
+            self.in_order_print(node.left)
+
+        if node.right:
+            #if you can go right
+            #print your current value of your node
+            #then go right
+            #(this preserves the sequential order to print before going further down the tree to the right)
+            print(node.value)
+            self.in_order_print(node.right)
+        else:
+            #if you are at a leaf
+            #print value
+            print(node.value)
+
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
-        pass
+
+        #So to print every value in bredth
+        #we use as a queue as we call a node
+        #we put the child nodes at the back of the queue
+        #this enforces calling all nodes of one level before the next level of nodes are called
+
+        q = Queue()
+        #enqueue adds a value to the back of the line.
+        #to start the function we put the node passed in at the back/front of the queue
+        q.enqueue(node)
+
+        #now, while the queue is not empty...
+        while q.len() > 0:
+            #we take the node at the front of the queue
+            #and set it to current node
+            current_node = q.dequeue()
+            #print its value
+            print(current_node.value)
+            #if there is a node to the left, add it to the queu
+            if current_node.left:
+                q.enqueue(current_node.left)
+            #same for right
+            if current_node.right:
+                q.enqueue(current_node.right)
+
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        #create a stack of current nodes to keep track of
+        #place the first node onto the stack
+
+        #while stack isn't empty:
+           #pop the top node
+           #print node
+           #add children to stack
+           #put right child on first then left to preserve output order
+        
+        stack = Stack()
+        stack.push(node)
+        while stack.len() > 0:
+            current_node = stack.pop()
+            print(current_node.value)
+
+            #Order is more important for DFT
+            #so this lends to a stack's property that whatever was added most
+            #
+            if current_node.left:
+                stack.push(current_node.left)
+            if current_node.right:
+                stack.push(current_node.right)
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
